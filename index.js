@@ -42,9 +42,13 @@ const server = http.createServer((req, res) => {
     }, (statusCode, payload) => {
       statusCode = typeof statusCode === 'number' ? statusCode : 200;
       payload = typeof payload === 'object' ? payload : {};
+      payload = JSON.stringify(payload);
 
-      res.writeHead(statusCode);
-      res.end(JSON.stringify(payload));
+      res.writeHead(statusCode, {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(payload)
+      });
+      res.end(payload);
     });
 
   });
